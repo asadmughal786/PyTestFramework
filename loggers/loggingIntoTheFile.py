@@ -1,6 +1,6 @@
 import logging
 
-logging.basicConfig(level=logging.DEBUG,filename='..\logs\ErrorLogFile.log',filemode='a')  # Configuring the logging file.
+logging.basicConfig(level=logging.DEBUG,filename='./loggers/logs/automation.log',filemode='a')  # Configuring the logging file.
 
 logging.debug('this is debug logging')  #it dont print
 logging.debug('this is debug logging')  #it dont print

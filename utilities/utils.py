@@ -3,6 +3,8 @@
 
 
 
+import inspect
+import logging
 import softest
 
 class Utils(softest.TestCase):
@@ -27,3 +29,23 @@ class Utils(softest.TestCase):
     def assert_Url(self,actualUrl,ExpectedUrl):
         self.soft_assert(self.assertEqual(actualUrl,ExpectedUrl))
         self.assert_all()
+    
+
+    def custom_logger(logLevel = logging.DEBUG):
+        # set the class/method name from where it's called
+        logger_name = inspect.stack()[1][3]
+        # creat logger 
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(logging.DEBUG) 
+        # create console handler or file handler and set the log level
+        filehandler = logging.FileHandler("./loggers/logs/automation.log", mode='a')
+        filehandler.setLevel(logLevel)
+        # creat formatter - how to you want you logs to be look like 
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S %p')
+        # Add formatter to the console or file
+        filehandler.setFormatter(formatter)
+        # Add console handler to the logger 
+        logger.addHandler(filehandler)
+        return logger
+

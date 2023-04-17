@@ -1,13 +1,15 @@
+import logging
 import time
 from selenium.webdriver.common.by import By
 from base.base_Driver import BaseDriver
 from utilities.utils import Utils
+from selenium.webdriver.common.alert import Alert
 
 # Implementation file All the technical functionality here
 # best Practise is as for POM (Page Object Model file) all the dependencies should be listed in the same file and class
 
 class launchPage(BaseDriver):
-
+    log = Utils.custom_logger(logLevel=logging.WARNING)
     def __init__(self, driver):
         super().__init__(driver)  # this will initialize the base class as well as the object of this class will be created
         self.driver = driver
@@ -87,17 +89,32 @@ class launchPage(BaseDriver):
         self.getDemoScreen().click()
         time.sleep(5)  # import time
 
+
     def FormFunctionalityverification(self, first_name , last_name, business_name, email):
-        self.EnterFirstName(first_name)
-        self.EnterLastName(last_name)
-        self.EnterBusinessName(business_name)
-        self.EnterEmail(email)
-        result = int(self.getCaptchaNum1().text) + int(self.getCaptchaNum2().text)
-        # print(result)
-        self.EnterResult(result)
-        self.clickSubmitButton()
-        ut = Utils()
-        message= self.getMessages()
-        ut.assert_Element_Text(message,"Thank you!")
-        self.clickDemoButton()
+        alert = Alert(self.driver)
+        try:
+            self.EnterFirstName(first_name)
+            self.log.info(f"Successfully Typed the First Name: {first_name}")
+            self.EnterLastName(last_name)
+            self.log.info(f"Successfully Typed the Last Name: {last_name}")
+            self.EnterBusinessName(business_name)
+            self.log.warning(f"Successfully Typed the Business Name: {business_name}")
+            self.EnterEmail(email)
+            self.log.warning(f"Successfully Typed the Email: {email}")
+            result = int(self.getCaptchaNum1().text) + int(self.getCaptchaNum2().text)
+            self.EnterResult(result)
+            self.log.warning(f"Successfully Typed the Result: {result}")
+            self.clickSubmitButton()
+            self.log.warning(f"Successfully Clicked the Button Name")
+        except:
+            print(alert.text)
+        finally:
+            alert.accept()
+            print(f"Successfully Accepted the Alert: {result}")
+            ut = Utils()
+            message= self.getMessages()
+            self.log.info(message)
+            self.log.warning(f"Test Executed")
+            ut.assert_Element_Text(message,"Thank you!")
+            self.clickDemoButton()
 
