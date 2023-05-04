@@ -113,6 +113,7 @@ def pytest_runtest_makereport(item,call):
                 img_html = f"<div><img src='%s' alt='screenshot' style='width: 300px;height: 200px;' onclick='window.open(this.src)' align='right'/></div>" % file_name
                 extras.append(pytest_html.extras.html(img_html))
         report.extras = extras
+        
 def _capture_screenshot(name):
     driver.get_screenshot_as_file(name)
 
