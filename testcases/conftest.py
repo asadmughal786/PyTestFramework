@@ -102,15 +102,19 @@ def pytest_runtest_makereport(item,call):
         xfail = hasattr(report, "wasxfail")
         if (report.skipped and xfail) or (report.failed and not xfail):
             # only add additional html on failure
-            report_directory = os.path.dirname(item.config.option.htmlpath)
-            file_name = str(int(round(time.time()*1000))) + ".png"
-            destination_file = os.path.join(report_directory, file_name)
-            driver = item.funcargs["setup"].driver
-            driver.save_screenshot(destination_file)
+
+            # report_directory = os.path.dirname(item.config.option.htmlpath)
+            # file_name = str(int(round(time.time()*1000))) + ".png"
+            # destination_file = os.path.join(report_directory, file_name)
+            # driver = item.funcargs["setup"].driver
+            # driver.save_screenshot(destination_file)
+            file_name = report.nodeid.replace("::",'_')+'.png'_capture_screenshot(file_name)
             if file_name:
                 img_html = f"<div><img src='%s' alt='screenshot' style='width: 300px;height: 200px;' onclick='window.open(this.src)' align='right'/></div>" % file_name
                 extras.append(pytest_html.extras.html(img_html))
         report.extras = extras
+def _capture_screenshot(name):
+    driver.get_screenshot_as_file(name)
 
 
 
